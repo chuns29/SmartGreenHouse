@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOT Greenhouse Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <h2 class="logo">IOT SYSTEM</h2>
+        <ul>
+            <li class="active" onclick="openTab('overview', this)">Tổng quan</li>
+            <li onclick="openTab('statistics', this)">Thống kê</li>
+            <li>Thiết bị</li>
+            <li>Cài đặt</li>
+        </ul>
+    </aside>
+
+    <main class="main">
+        
+        <div id="overview" class="tab-content active">
+            <h1>Tổng quan hệ thống</h1>
+            <div class="cards">
+                <div class="card">
+                    <h3>Nhiệt độ (°C)</h3>
+                    <p class="value" id="tempValue">--</p>
+                    <span id="tempStatus">---</span>
+                </div>
+
+                <div class="card">
+                    <h3>Độ ẩm đất (%)</h3>
+                    <p class="value" id="soilValue">--</p>
+                    <span id="soilStatus">---</span>
+                </div>
+
+                <div class="card">
+                    <h3>Thời gian cập nhật</h3>
+                    <p class="value" id="timeValue">--:--</p>
+                    <span>Realtime</span>
+                </div>
+
+                <div class="card">
+                    <h3>Máy bơm</h3>
+                    <p class="value" id="pumpValue">OFF</p>
+                    <span id="pumpStatus">---</span>
+                </div>
+
+                <div class="card">
+                    <h3>Quạt Làm Mát (LED3)</h3>
+                    <p class="value" id="fanValue">OFF</p>
+                    <span id="fanStatus">---</span>
+                </div>
+
+                <div class="card">
+                    <h3>Đèn Chiếu Sáng (LED2)</h3>
+                    <p class="value" id="lightValue">OFF</p>
+                    <span id="lightStatus">---</span>
+                </div>
+            </div>
+
+            <div class="table-box">
+                <h3>Trạng thái thiết bị chi tiết</h3>
+                <table>
+                    <tr><th>Thiết bị</th><th>Trạng thái</th></tr>
+                    <tr>
+                        <td>Máy bơm nước</td>
+                        <td id="pumpTable" class="off">Chờ dữ liệu...</td>
+                    </tr>
+                    <tr>
+                        <td>Quạt làm mát (LED3)</td>
+                        <td id="fanTable" class="off">OFF</td>
+                    </tr>
+                    <tr>
+                        <td>Đèn chiếu sáng (LED2)</td>
+                        <td id="lightTable" class="off">OFF</td>
+                    </tr>
+                    <tr>
+                        <td>Cảm biến nhiệt độ (DHT22)</td>
+                        <td class="on">Hoạt động</td>
+                    </tr>
+                    <tr>
+                        <td>Cảm biến độ ẩm đất</td>
+                        <td class="on">Hoạt động</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="statistics" class="tab-content">
+            <h1>Biểu đồ theo dõi</h1>
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>Nhiệt độ (°C)</h3>
+                    <canvas id="tempChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>Độ ẩm đất (%)</h3>
+                    <canvas id="soilChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>Lịch sử Bơm (ON/OFF)</h3>
+                    <canvas id="pumpChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div id="systemAlert" class="alert-box" style="display: none;">
+                <h3 class="alert-title">⚠️ CẢNH BÁO HỆ THỐNG</h3>
+                <ul id="alertContent">
+                    </ul>
+            </div>
+    </main>
+</div>
+
+<script>
+    function openTab(tabId, element) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.sidebar li').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        element.classList.add('active');
+    }
+</script>
+
+<script src="api.js"></script>
+
+</body>
+</html>
